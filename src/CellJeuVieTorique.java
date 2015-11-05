@@ -4,8 +4,9 @@ public class CellJeuVieTorique implements Cell<State, SquareGridNbh>{
 	private State cellState;
 	private CellJeuVieTorique[] neighbor;
 	
-	public CellJeuVieTorique(){
+	public CellJeuVieTorique(int sizeEnum){
 		cellState = LifeState.DEAD;
+		neighbor = new CellJeuVieTorique[sizeEnum];
 	}
 	
 	public State getState() {
@@ -23,40 +24,44 @@ public class CellJeuVieTorique implements Cell<State, SquareGridNbh>{
 			return LifeState.DEAD;
 	}
 
-	public void setNeighbors(int direction, CellJeuVieTorique j){
-		neighbor[direction] = j;
+	public void setNeighbors(SquareGridNbh direction, CellJeuVieTorique j){
+		neighbor[neighborDirection(direction)] = j;
 	}
 	
 	@Override
 	public CellJeuVieTorique getNeighbor(SquareGridNbh direction) {
-		//Clock rotation
+		return neighbor[neighborDirection(direction)];
+		
+	}
+	
+	public int neighborDirection(SquareGridNbh direction){
 		switch (direction){
-				
+		
 		case NORTH :
-			return neighbor[0];
+			return 0;
 			
 		case NORTH_EAST :
-			return neighbor[1];
+			return 1;
 			
 		case EAST :
-			return neighbor[2];
+			return 2;
 			
 		case SOUTH_EAST :
-			return neighbor[3];
+			return 3;
 			
 		case SOUTH :
-			return neighbor[4];
+			return 4;
 			
 		case SOUTH_WEST :
-			return neighbor[5];
+			return 5;
 			
 		case WEST :
-			return neighbor[6];
+			return 6;
 			
 		case NORTH_WEST:
-			return neighbor[7];
+			return 7;
 			
-		default : return null;
+		default : return -1;
 		}
 	}
 
