@@ -25,6 +25,7 @@ public class GridJeuVieToriqueTest {
 				}
 			}
 		}
+		g.update();
 	}
 
 }

@@ -18,7 +18,7 @@ public class CellJeuVieTorique implements Cell<State, SquareGridNbh>{
 	}
 
 	public State nextState() {
-		if (getState() == LifeState.DEAD)
+		if (cellState == LifeState.DEAD)
 			return LifeState.ALIVE;
 		else
 			return LifeState.DEAD;

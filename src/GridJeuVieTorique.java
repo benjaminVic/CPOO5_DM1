@@ -3,13 +3,15 @@ public class GridJeuVieTorique implements Grid<State, SquareGridNbh, CellJeuVieT
 
 	private CellJeuVieTorique[][] tableau;
 	private final int enumElem;
+	private int rows;
+	private int colums;
 	
 
 	public GridJeuVieTorique(int rows, int colums){
 		int enumElems = 0;
-		for (SquareGridNbh s : SquareGridNbh.values()){
-			enumElems++;
-		}
+		enumElems = SquareGridNbh.values().length;
+			
+		
 		
 		this.enumElem = enumElems;
 		System.out.println(enumElems);
@@ -156,14 +158,47 @@ public class GridJeuVieTorique implements Grid<State, SquareGridNbh, CellJeuVieT
 
 	@Override
 	public void update() {
-		// TODO Auto-generated method stub
-
+		CellJeuVieTorique[][] tableauEtatTemp = tableau.clone();
+		int aliveNeighbors;
+		for (int i = 0; i < rows; i++) {
+			for (int j = 0; j < colums; j++) {
+				// Number of living neighbors
+				aliveNeighbors = 0;
+				for (SquareGridNbh direction : SquareGridNbh.values()) {
+					if (tableau[i][j].getNeighbor(direction).getState() == LifeState.ALIVE) {
+						aliveNeighbors++;
+					}
+				}
+				//Choosing of the cell's state
+				if (tableau[i][j].getState() == LifeState.ALIVE 
+						&& (aliveNeighbors == 2 || aliveNeighbors == 3)) {
+					tableauEtatTemp[i][j].setState(LifeState.ALIVE);
+				} else if(tableau[i][j].getState() == LifeState.DEAD 
+						&& aliveNeighbors == 3) {
+					tableauEtatTemp[i][j].setState(LifeState.ALIVE);
+				} else {
+					tableauEtatTemp[i][j].setState(LifeState.DEAD);
+				}
+			}
+		}
+		//Changing state of the actual table
+		for (int i = 0; i < rows; i++) {
+			for (int j = 0; j < colums; j++) {
+				tableau[i][j].setState(tableauEtatTemp[i][j].getState());
+			}			
+		}
 	}
 
 	@Override
 	public String stateAsString() {
-		// TODO Auto-generated method stub
-		return null;
+		String returnValue = "";
+		for (int i = 0 ; i<rows ; i++){
+			returnValue += "\n";
+			for (int j = 0 ; j < colums ; j++){
+				returnValue += " " + tableau[i][j].getState().toChar();
+			}
+		}
+		return returnValue;
 	}
 
 }
