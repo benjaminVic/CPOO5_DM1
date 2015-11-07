@@ -158,33 +158,16 @@ public class GridJeuVieTorique implements Grid<State, SquareGridNbh, CellJeuVieT
 
 	@Override
 	public void update() {
-		CellJeuVieTorique[][] tableauEtatTemp = tableau.clone();
-		int aliveNeighbors;
+		LifeState[][] tableauEtatTemp = new LifeState[rows][colums];
 		for (int i = 0; i < rows; i++) {
 			for (int j = 0; j < colums; j++) {
-				// Number of living neighbors
-				aliveNeighbors = 0;
-				for (SquareGridNbh direction : SquareGridNbh.values()) {
-					if (tableau[i][j].getNeighbor(direction).getState() == LifeState.ALIVE) {
-						aliveNeighbors++;
-					}
-				}
-				//Choosing of the cell's state
-				if (tableau[i][j].getState() == LifeState.ALIVE 
-						&& (aliveNeighbors == 2 || aliveNeighbors == 3)) {
-					tableauEtatTemp[i][j].setState(LifeState.ALIVE);
-				} else if(tableau[i][j].getState() == LifeState.DEAD 
-						&& aliveNeighbors == 3) {
-					tableauEtatTemp[i][j].setState(LifeState.ALIVE);
-				} else {
-					tableauEtatTemp[i][j].setState(LifeState.DEAD);
-				}
+				tableauEtatTemp[i][j] = tableau[i][j].nextState();
 			}
 		}
 		//Changing state of the actual table
 		for (int i = 0; i < rows; i++) {
 			for (int j = 0; j < colums; j++) {
-				tableau[i][j].setState(tableauEtatTemp[i][j].getState());
+				tableau[i][j].setState(tableauEtatTemp[i][j]);
 			}			
 		}
 	}
@@ -196,8 +179,10 @@ public class GridJeuVieTorique implements Grid<State, SquareGridNbh, CellJeuVieT
 			returnValue += "\n";
 			for (int j = 0 ; j < colums ; j++){
 				returnValue += " " + tableau[i][j].getState().toChar();
+				System.out.println(tableau[i][j].getState().toChar());
 			}
 		}
+		System.out.println(returnValue);
 		return returnValue;
 	}
 

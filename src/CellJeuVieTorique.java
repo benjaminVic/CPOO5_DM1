@@ -17,11 +17,22 @@ public class CellJeuVieTorique implements Cell<State, SquareGridNbh>{
 		cellState = state;		
 	}
 
-	public State nextState() {
-		if (cellState == LifeState.DEAD)
+	@Override
+	public LifeState nextState() {
+		int aliveNeighbor = 0 ;
+		for (CellJeuVieTorique cjvt : neighbor){
+			if(cjvt.getState() == LifeState.ALIVE){
+				aliveNeighbor++;
+			}
+		}
+		if (cellState == LifeState.ALIVE && 
+				(aliveNeighbor == 2 || aliveNeighbor == 3)){
 			return LifeState.ALIVE;
-		else
-			return LifeState.DEAD;
+		} else if (cellState == LifeState.DEAD &&
+				aliveNeighbor == 3){
+			return LifeState.ALIVE;
+		}
+		return LifeState.DEAD;
 	}
 
 	public void setNeighbors(SquareGridNbh direction, CellJeuVieTorique j){
