@@ -2,25 +2,21 @@
 public class GridJeuVieTorique implements Grid<State, SquareGridNbh, CellJeuVieTorique>{
 
 	private CellJeuVieTorique[][] tableau;
-	private final int enumElem;
-	private int rows;
-	private int colums;
-	
+	private final int rows;
+	private final int colums;	
 
 	public GridJeuVieTorique(int rows, int colums){
 		int enumElems = 0;
 		enumElems = SquareGridNbh.values().length;
 			
-		
-		
-		this.enumElem = enumElems;
-		System.out.println(enumElems);
+		this.rows = rows;
+		this.colums = colums;	
 		
 		/*Initialisation du tableau*/
 		tableau = new CellJeuVieTorique[rows][colums];
 		for (int i = 0;i<rows;i++){
 			for (int j = 0; j<colums ; j++){
-				tableau[i][j] = new CellJeuVieTorique(this.enumElem);
+				tableau[i][j] = new CellJeuVieTorique(enumElems);
 			}
 		}
 		/*Gestion des voisins*/
@@ -174,16 +170,14 @@ public class GridJeuVieTorique implements Grid<State, SquareGridNbh, CellJeuVieT
 
 	@Override
 	public String stateAsString() {
-		String returnValue = "";
+		final StringBuilder stringBuilder = new StringBuilder();
 		for (int i = 0 ; i<rows ; i++){
-			returnValue += "\n";
+			stringBuilder .append('\n');
 			for (int j = 0 ; j < colums ; j++){
-				returnValue += " " + tableau[i][j].getState().toChar();
-				System.out.println(tableau[i][j].getState().toChar());
+				stringBuilder.append(' ').append(tableau[i][j].getState().toChar());
 			}
 		}
-		System.out.println(returnValue);
-		return returnValue;
+		return stringBuilder.toString();
 	}
 
 }

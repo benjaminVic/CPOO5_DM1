@@ -4,52 +4,54 @@ import java.io.InputStreamReader;
 import java.util.Objects;
 import java.util.Scanner;
 
-public class appli {
+public class ConsoleApp {
 
 	private static String nomJeux1 = "Jeu de la vie";
 
 	public static void main(String[] args) throws IOException {
 
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		InputStreamReader inputStreamReader = new InputStreamReader(System.in);
+		BufferedReader br = new BufferedReader(inputStreamReader);
 
-		// TODO UNFUCK BY ADDING MOTHERFUCKING EQUALS FOR STRINGS
 		String inputGameName;
-		int colums = columsSizer();
-		int rows = rowsSizer();
+		System.out.println("Quel nombre de colonnes désirez-vous?");
+		int colums = sizer();
+		System.out.println("Quel nombre de lignes désirez-vous?");
+		int rows = sizer();
 		GridJeuVieTorique plateau = new GridJeuVieTorique(rows, colums);
 		do {
 			menuPrinter();
 			inputGameName = br.readLine();
+
 			switch (inputGameName) {
 			case ("a"):
-				int gameMode = gameHandler();
-			if (gameMode == 0) {
-				String cpc; // CANARD PC \o/
-				do {
-					plateau.update();
-					System.out.println(plateau.stateAsString());
-					System.out
-					.println("Voulez-vous quitter ? (o)");
-					cpc = br.readLine();
-				} while (!Objects.equals(cpc, "o"));
-			} else if (gameMode > 0) {
-				for (int multipleruns = 1; multipleruns < gameMode; multipleruns++) {
-					plateau.update();
+				int gameMode = jdvHandler();
+				if (gameMode == 0) {
+					String cpc; // CANARD PC \o/
+					do {
+						plateau.update();
+						System.out.println(plateau.stateAsString());
+						System.out.println("Voulez-vous quitter ? (o)");
+						cpc = br.readLine();
+					} while (!Objects.equals(cpc, "o"));
+				} else if (gameMode > 0) {
+					for (int multipleruns = 1; multipleruns < gameMode; multipleruns++) {
+						plateau.update();
+					}
 				}
-			}
-
+				break;
 			default:
 				break;
 
 			}
 
 		} while (!Objects.equals(inputGameName, "q"));
-		br.close();
 	}
 
-	private static int gameHandler() throws IOException {
+	private static int jdvHandler() throws IOException {
 		String gameMode;
 		Integer numberOfIteration;
+		@SuppressWarnings("resource")
 		Scanner sc = new Scanner(System.in);
 		do {
 			System.out.println("Veuillez choir un mode de jeu");
@@ -61,7 +63,7 @@ public class appli {
 				return 0;
 			} else if (Objects.equals(gameMode, "2")) {
 				System.out
-				.println("Veuillez choisir le nombre d'itération souhaité pour le mode continu");
+						.println("Veuillez choisir le nombre d'itération souhaité pour le mode continu");
 				if (sc.hasNextInt()) {
 					numberOfIteration = sc.nextInt();
 					return numberOfIteration;
@@ -69,46 +71,34 @@ public class appli {
 				// Permet d'éviter les imperfections de scanner
 				sc = new Scanner(System.in);
 				System.out
-				.println("Vous vous êtes raté ! Seul des entier sont acceptés !");
+						.println("Vous vous êtes raté ! Seul des entier sont acceptés !");
 			}
 		} while (!Objects.equals(gameMode, "q"));
-		sc.close();
 		return -1;
-
 	}
 
 	private static void menuPrinter() {
 		System.out
-		.println("Bonjour bienvenue dans l'interface console du DM1 de CPOO5");
+				.println("Bonjour bienvenue dans l'interface console du DM1 de CPOO5");
 		System.out.println("Veuillez choisir un jeu (saisir lettre) :\n");
 		System.out.println("\ta - \"" + nomJeux1 + "\"");
 		System.out.println("\tb - \"        \"");
 		System.out.println("Pour quitter - q");
 	}
 
-	private static int rowsSizer() {
-		Scanner sc = new Scanner(System.in);
+	private static int sizer() {
+		@SuppressWarnings("resource")
+		Scanner scc = new Scanner(System.in);
 		int numberOfIteration;
-		System.out.println("Quel nombre de lignes désirez-vous?");
 		while (true) {
-			if (sc.hasNextInt()) {
-				numberOfIteration = sc.nextInt();
+			if (scc.hasNextInt()) {
+				numberOfIteration = scc.nextInt();
+				if (numberOfIteration < 2) {
+					numberOfIteration = 2;
+				}
 				return numberOfIteration;
 			}
-			System.out.println("Quel nombre de lignes désirez-vous?");
 		}
 	}
 
-	private static int columsSizer() {
-		Scanner sc = new Scanner(System.in);
-		int numberOfIteration;
-		System.out.println("Quel nombre de colonnes désirez-vous?");
-		while (true) {
-			if (sc.hasNextInt()) {
-				numberOfIteration = sc.nextInt();
-				return numberOfIteration;
-			}
-			System.out.println("Quel nombre de colonnes désirez-vous?");
-		}
-	}
 }

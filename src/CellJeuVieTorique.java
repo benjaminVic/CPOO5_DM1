@@ -8,7 +8,7 @@ public class CellJeuVieTorique implements Cell<State, SquareGridNbh>{
 		cellState = LifeState.DEAD;
 		neighbor = new CellJeuVieTorique[sizeEnum];
 	}
-	
+
 	public State getState() {
 		return cellState;
 	}
@@ -35,8 +35,8 @@ public class CellJeuVieTorique implements Cell<State, SquareGridNbh>{
 		return LifeState.DEAD;
 	}
 
-	public void setNeighbors(SquareGridNbh direction, CellJeuVieTorique j){
-		neighbor[neighborDirection(direction)] = j;
+	public void setNeighbors(SquareGridNbh direction, CellJeuVieTorique c){
+		neighbor[neighborDirection(direction)] = c;
 	}
 	
 	@Override
