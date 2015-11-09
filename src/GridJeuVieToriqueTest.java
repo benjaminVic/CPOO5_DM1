@@ -6,17 +6,19 @@ public class GridJeuVieToriqueTest {
 
 	@Test
 	public void testNeighbors() {
-		int rows = 10;
-		int colums = 10;
+		
 		int k = 0;
 		int i = 0;
 		int j = 0;
-		GridJeuVieTorique g = new GridJeuVieTorique(rows, colums);
+		GridJeuVieTorique g = new GridJeuVieTorique("a");
+		int rows = g.getRows();
+		int colums = g.getColums();
 		for (i = 0; i < rows; ++i) {
 			for (j = 0; j < colums; ++j) {
 				k=0;
 				for (SquareGridNbh s : SquareGridNbh.values()) {
-					if(g.getCell(i, j).getNeighbor(s).getState() == LifeState.DEAD){
+					if(g.getCell(i, j).getNeighbor(s).getState() == LifeState.DEAD
+							|| g.getCell(i, j).getNeighbor(s).getState() == LifeState.ALIVE){
 						k++;
 					}
 				}
@@ -28,7 +30,7 @@ public class GridJeuVieToriqueTest {
 				
 			}
 		}
-		if (i != 10 && j != 10){
+		if (i != rows && j != colums){
 			fail("Colum size or rows counting failure");
 		}
 		g.update();

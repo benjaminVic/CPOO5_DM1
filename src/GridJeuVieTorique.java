@@ -2,8 +2,8 @@
 public class GridJeuVieTorique implements Grid<State, SquareGridNbh, CellJeuVieTorique>{
 
 	private CellJeuVieTorique[][] tableau;
-	private final int rows;
-	private final int colums;	
+	private int rows;
+	private int colums;	
 
 	public GridJeuVieTorique(int rows, int colums){
 		int enumElems = 0;
@@ -19,6 +19,146 @@ public class GridJeuVieTorique implements Grid<State, SquareGridNbh, CellJeuVieT
 				tableau[i][j] = new CellJeuVieTorique(enumElems);
 			}
 		}
+		neighborConstructor();
+	}
+	
+	public GridJeuVieTorique(String preset){
+		switch (preset){
+		case ("a") :
+			int enumElems = 0;
+			enumElems = SquareGridNbh.values().length;
+			this.rows = 15;
+			this.colums = 38;
+			/*Initialisation du tableau*/
+			tableau = new CellJeuVieTorique[rows][colums];
+			for (int i = 0;i<rows;i++){
+				for (int j = 0; j<colums ; j++){
+					tableau[i][j] = new CellJeuVieTorique(enumElems);
+				}
+			}
+			/*
+			 * Setting the preset on living cells
+			 * models : http://math.pc.vh.free.fr/divers/life/guns.htm
+			 */
+			tableau[5][1].setState(LifeState.ALIVE);
+			tableau[5][2].setState(LifeState.ALIVE);
+			tableau[6][1].setState(LifeState.ALIVE);
+			tableau[6][2].setState(LifeState.ALIVE);
+			tableau[3][35].setState(LifeState.ALIVE);
+			tableau[4][35].setState(LifeState.ALIVE);
+			tableau[3][36].setState(LifeState.ALIVE);
+			tableau[4][36].setState(LifeState.ALIVE);
+			
+			tableau[2][23].setState(LifeState.ALIVE);
+			tableau[6][23].setState(LifeState.ALIVE);
+			
+			tableau[1][25].setState(LifeState.ALIVE);
+			tableau[2][25].setState(LifeState.ALIVE);
+			
+			tableau[6][25].setState(LifeState.ALIVE);
+			tableau[7][25].setState(LifeState.ALIVE);
+			
+			tableau[1][25].setState(LifeState.ALIVE);
+			tableau[2][25].setState(LifeState.ALIVE);
+			
+			tableau[3][22].setState(LifeState.ALIVE);
+			tableau[4][22].setState(LifeState.ALIVE);
+			tableau[5][22].setState(LifeState.ALIVE);
+			tableau[3][21].setState(LifeState.ALIVE);
+			tableau[4][21].setState(LifeState.ALIVE);
+			tableau[5][21].setState(LifeState.ALIVE);
+			
+			tableau[3][13].setState(LifeState.ALIVE);
+			tableau[3][14].setState(LifeState.ALIVE);
+			tableau[9][13].setState(LifeState.ALIVE);
+			tableau[9][14].setState(LifeState.ALIVE);
+			
+			tableau[4][12].setState(LifeState.ALIVE);
+			tableau[8][12].setState(LifeState.ALIVE);
+			
+			tableau[5][11].setState(LifeState.ALIVE);
+			tableau[6][11].setState(LifeState.ALIVE);
+			tableau[7][11].setState(LifeState.ALIVE);
+			
+			tableau[6][15].setState(LifeState.ALIVE);
+			
+			tableau[4][16].setState(LifeState.ALIVE);
+			tableau[8][16].setState(LifeState.ALIVE);
+			
+			tableau[5][17].setState(LifeState.ALIVE);
+			tableau[6][17].setState(LifeState.ALIVE);
+			tableau[7][17].setState(LifeState.ALIVE);
+			
+			tableau[6][18].setState(LifeState.ALIVE);
+		break;
+
+		case ("b") :
+			int enumElems2 = 0;
+			enumElems2 = SquareGridNbh.values().length;
+			this.rows = 9;
+			this.colums = 28;
+			/* Initialisation du tableau */
+			tableau = new CellJeuVieTorique[rows][colums];
+			for (int i = 0; i < rows; i++) {
+				for (int j = 0; j < colums; j++) {
+					tableau[i][j] = new CellJeuVieTorique(enumElems2);
+				}
+			}
+			tableau[2][1].setState(LifeState.ALIVE);			
+			tableau[1][2].setState(LifeState.ALIVE);
+			tableau[1][3].setState(LifeState.ALIVE);
+			tableau[1][4].setState(LifeState.ALIVE);
+			tableau[2][4].setState(LifeState.ALIVE);
+			tableau[3][4].setState(LifeState.ALIVE);
+			tableau[4][4].setState(LifeState.ALIVE);
+			tableau[5][4].setState(LifeState.ALIVE);
+			tableau[6][4].setState(LifeState.ALIVE);
+			tableau[7][3].setState(LifeState.ALIVE);
+			
+			tableau[5][7].setState(LifeState.ALIVE);
+			tableau[6][7].setState(LifeState.ALIVE);
+			tableau[6][8].setState(LifeState.ALIVE);
+			tableau[7][7].setState(LifeState.ALIVE);
+			tableau[7][8].setState(LifeState.ALIVE);
+			
+			tableau[3][9].setState(LifeState.ALIVE);
+			tableau[2][10].setState(LifeState.ALIVE);
+			tableau[3][10].setState(LifeState.ALIVE);
+			tableau[1][11].setState(LifeState.ALIVE);
+			tableau[2][11].setState(LifeState.ALIVE);
+			tableau[2][12].setState(LifeState.ALIVE);
+			tableau[3][12].setState(LifeState.ALIVE);
+			
+			tableau[2][16].setState(LifeState.ALIVE);
+			tableau[3][16].setState(LifeState.ALIVE);
+			tableau[1][17].setState(LifeState.ALIVE);
+			tableau[2][17].setState(LifeState.ALIVE);
+			tableau[2][18].setState(LifeState.ALIVE);
+			tableau[3][18].setState(LifeState.ALIVE);
+			tableau[3][19].setState(LifeState.ALIVE);
+			
+			tableau[6][20].setState(LifeState.ALIVE);
+			tableau[7][20].setState(LifeState.ALIVE);
+			tableau[5][21].setState(LifeState.ALIVE);
+			tableau[6][21].setState(LifeState.ALIVE);
+			tableau[7][21].setState(LifeState.ALIVE);
+			
+			tableau[6][24].setState(LifeState.ALIVE);
+			tableau[5][24].setState(LifeState.ALIVE);
+			tableau[4][24].setState(LifeState.ALIVE);
+			tableau[3][24].setState(LifeState.ALIVE);
+			tableau[2][24].setState(LifeState.ALIVE);
+			tableau[1][24].setState(LifeState.ALIVE);
+			tableau[7][25].setState(LifeState.ALIVE);
+			tableau[1][25].setState(LifeState.ALIVE);
+			tableau[1][26].setState(LifeState.ALIVE);
+			tableau[2][27].setState(LifeState.ALIVE);
+			break;
+		}
+		neighborConstructor();
+	}
+	
+	private void neighborConstructor(){
 		/*Gestion des voisins*/
 
 		/*
@@ -180,4 +320,11 @@ public class GridJeuVieTorique implements Grid<State, SquareGridNbh, CellJeuVieT
 		return stringBuilder.toString();
 	}
 
+	public int getRows(){
+		return this.rows;
+	}
+	
+	public int getColums(){
+		return this.colums;
+	}
 }
