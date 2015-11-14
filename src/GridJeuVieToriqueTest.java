@@ -10,7 +10,7 @@ public class GridJeuVieToriqueTest {
 		int k = 0;
 		int i = 0;
 		int j = 0;
-		GridJeuVieTorique g = new GridJeuVieTorique("a");
+		GridJeuVieTorique g = new GridJeuVieTorique("a", true);
 		int rows = g.getRows();
 		int colums = g.getColums();
 		for (i = 0; i < rows; ++i) {
@@ -29,6 +29,7 @@ public class GridJeuVieToriqueTest {
 				}
 				
 			}
+			
 		}
 		if (i != rows && j != colums){
 			fail("Colum size or rows counting failure");

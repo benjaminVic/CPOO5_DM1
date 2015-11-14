@@ -8,6 +8,7 @@ import java.util.Scanner;
 public class ConsoleApp {
 
 	private static String nomJeux1 = "Jeu de la vie";
+	private static String nomJeux2 = "Jeu de la vie - variante Torique -";
 
 	public static void main(String[] args) throws IOException {
 
@@ -73,7 +74,7 @@ public class ConsoleApp {
 				int colums = sizer();
 				System.out.println("Quel nombre de lignes désirez-vous?");
 				int rows = sizer();
-				GridJeuVieTorique gjvt = new GridJeuVieTorique(rows, colums);
+				GridJeuVieTorique gjvt = new GridJeuVieTorique(rows, colums, true);
 				// TODO MAKE A CELL RANDOMIZER FOR THE GRID
 				return gjvt;
 			}
@@ -116,7 +117,7 @@ public class ConsoleApp {
 		.println("Bonjour bienvenue dans l'interface console du DM1 de CPOO5");
 		System.out.println("Veuillez choisir un jeu (saisir lettre) :\n");
 		System.out.println("\ta - \"" + nomJeux1 + "\"");
-		System.out.println("\tb - \"        \"");
+		System.out.println("\tb - \"" + nomJeux2 + "\"");
 		System.out.println("Pour quitter - q");
 	}
 
