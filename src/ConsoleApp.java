@@ -1,6 +1,7 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.InputMismatchException;
 import java.util.Objects;
 import java.util.Scanner;
 
@@ -49,6 +50,10 @@ public class ConsoleApp {
 		} while (!Objects.equals(inputGameName, "q"));
 	}
 
+	/**TODO
+	 * Offre le choix entre des presets et grid normaux
+	 * @return : un grid généré ou de preset
+	 */
 	private static GridJeuVieTorique gridTypeChoice() {
 		String gameMode;
 		@SuppressWarnings("resource")
@@ -78,9 +83,12 @@ public class ConsoleApp {
 		return null;
 	}
 
-	private static int jdvHandler() throws IOException {
+	/**
+	 * Proposes gamemode to the user
+	 * @return : te value of the chosen gamemode
+	 */
+	private static int jdvHandler() {
 		String gameMode;
-		Integer numberOfIteration;
 		@SuppressWarnings("resource")
 		Scanner sc = new Scanner(System.in);
 		do {
@@ -93,20 +101,16 @@ public class ConsoleApp {
 				return 0;
 			} else if (Objects.equals(gameMode, "2")) {
 				System.out
-				.println("Veuillez choisir le nombre d'itération souhaité pour le mode continu");
-				if (sc.hasNextInt()) {
-					numberOfIteration = sc.nextInt();
-					return numberOfIteration;
-				}
-				// Permet d'éviter les imperfections de scanner
-				sc = new Scanner(System.in);
-				System.out
-				.println("Vous vous êtes raté ! Seul des entier sont acceptés !");
+						.println("Veuillez choisir le nombre d'itération souhaité pour le mode continu");
+				return sc.nextInt();
 			}
 		} while (!Objects.equals(gameMode, "q"));
 		return -1;
 	}
 
+	/**
+	 * Print the menu to the user
+	 */
 	private static void menuPrinter() {
 		System.out
 		.println("Bonjour bienvenue dans l'interface console du DM1 de CPOO5");
@@ -116,18 +120,33 @@ public class ConsoleApp {
 		System.out.println("Pour quitter - q");
 	}
 
+	/**
+	 * Get the size of side of the grid
+	 * @return : the value inputed by the user
+	 */
 	private static int sizer() {
-		@SuppressWarnings("resource")
 		Scanner scc = new Scanner(System.in);
-		int numberOfIteration;
+		int numberOfIteration = integerInput(scc);
+		if (numberOfIteration < 2) {
+			numberOfIteration = 2;
+		}
+		return numberOfIteration;
+	}
+	
+	/**
+	 * get and input from the user
+	 * @param sc : a previously declared scanner
+	 * @return : the integer inputed by the user
+	 */
+	private static int integerInput(Scanner sc){
 		while (true) {
-			if (scc.hasNextInt()) {
-				numberOfIteration = scc.nextInt();
-				if (numberOfIteration < 2) {
-					numberOfIteration = 2;
-				}
-				return numberOfIteration;
-			}
+			try {
+				return sc.nextInt();
+			} catch (InputMismatchException i) {
+				System.out
+				.println("Vous vous êtes raté ! Seul des entier sont acceptés !");				
+				sc.next();
+			}			
 		}
 	}
 

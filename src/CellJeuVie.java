@@ -1,0 +1,103 @@
+
+public class CellJeuVie implements Cell<State, SquareGridNbh>{
+
+	private State cellState;
+	private CellJeuVie[] neighbor;
+	
+	/**
+	 * Cell Constructor
+	 * @param sizeEnum : neighbors table size : 8 if all directions 4 if only cardinals
+	 */
+	public CellJeuVie(int sizeEnum){
+		cellState = LifeState.DEAD;
+		neighbor = new CellJeuVie[sizeEnum];
+	}
+
+	/**
+	 * Return the state of the cell
+	 */
+	public State getState() {
+		return cellState;
+	}
+
+	/**
+	 * Change the state of the cell
+	 */
+	public void setState(State state) {
+		cellState = state;		
+	}
+
+	/**
+	 * Change the state of the cell depending on the neighbors
+	 */
+	@Override
+	public LifeState nextState() {
+		int aliveNeighbor = 0 ;
+		for (CellJeuVie cjvt : neighbor){
+			if(cjvt.getState() == LifeState.ALIVE){
+				aliveNeighbor++;
+			}
+		}
+		if (cellState == LifeState.ALIVE && 
+				(aliveNeighbor == 2 || aliveNeighbor == 3)){
+			return LifeState.ALIVE;
+		} else if (cellState == LifeState.DEAD &&
+				aliveNeighbor == 3){
+			return LifeState.ALIVE;
+		}
+		return LifeState.DEAD;
+	}
+
+	/**
+	 * Give the reference to another cell
+	 * @param direction : direction of the neighbor
+	 * @param c : cell to which the neigbor is pointing
+	 */
+	public void setNeighbors(SquareGridNbh direction, CellJeuVie c){
+		neighbor[neighborDirection(direction)] = c;
+	}
+	
+	
+	@Override
+	public CellJeuVie getNeighbor(SquareGridNbh direction) {
+		return neighbor[neighborDirection(direction)];
+		
+	}
+	
+	/**
+	 * points in the array of neighbors
+	 * @param direction : the direction from which the neighbor is needed
+	 * @return : a pointer to the array of reference of neighbors
+	 */
+	public int neighborDirection(SquareGridNbh direction){
+		switch (direction){
+		
+		case NORTH :
+			return 0;
+			
+		case NORTH_EAST :
+			return 4;
+			
+		case EAST :
+			return 1;
+			
+		case SOUTH_EAST :
+			return 5;
+			
+		case SOUTH :
+			return 2;
+			
+		case SOUTH_WEST :
+			return 6;
+			
+		case WEST :
+			return 3;
+			
+		case NORTH_WEST:
+			return 7;
+			
+		default : return -1;
+		}
+	}
+
+}

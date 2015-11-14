@@ -1,10 +1,15 @@
 
-public class GridJeuVieTorique implements Grid<State, SquareGridNbh, CellJeuVieTorique>{
+public class GridJeuVieTorique implements Grid<State, SquareGridNbh, CellJeuVie>{
 
-	private CellJeuVieTorique[][] tableau;
+	private CellJeuVie[][] tableau;
 	private int rows;
 	private int colums;	
 
+	/**TODO
+	 * Construct a grid randomly
+	 * @param rows : number of rows
+	 * @param colums : number of colums
+	 */
 	public GridJeuVieTorique(int rows, int colums){
 		int enumElems = 0;
 		enumElems = SquareGridNbh.values().length;
@@ -13,27 +18,29 @@ public class GridJeuVieTorique implements Grid<State, SquareGridNbh, CellJeuVieT
 		this.colums = colums;	
 		
 		/*Initialisation du tableau*/
-		tableau = new CellJeuVieTorique[rows][colums];
+		tableau = new CellJeuVie[rows][colums];
 		for (int i = 0;i<rows;i++){
 			for (int j = 0; j<colums ; j++){
-				tableau[i][j] = new CellJeuVieTorique(enumElems);
+				tableau[i][j] = new CellJeuVie(enumElems);
 			}
 		}
 		neighborConstructor();
 	}
 	
+	/**
+	 * Constructor of a Grid with preset
+	 * @param preset : code of the chosen preset
+	 */
 	public GridJeuVieTorique(String preset){
 		switch (preset){
 		case ("a") :
-			int enumElems = 0;
-			enumElems = SquareGridNbh.values().length;
 			this.rows = 15;
 			this.colums = 38;
 			/*Initialisation du tableau*/
-			tableau = new CellJeuVieTorique[rows][colums];
+			tableau = new CellJeuVie[rows][colums];
 			for (int i = 0;i<rows;i++){
 				for (int j = 0; j<colums ; j++){
-					tableau[i][j] = new CellJeuVieTorique(enumElems);
+					tableau[i][j] = new CellJeuVie(8);
 				}
 			}
 			/*
@@ -98,10 +105,10 @@ public class GridJeuVieTorique implements Grid<State, SquareGridNbh, CellJeuVieT
 			this.rows = 9;
 			this.colums = 28;
 			/* Initialisation du tableau */
-			tableau = new CellJeuVieTorique[rows][colums];
+			tableau = new CellJeuVie[rows][colums];
 			for (int i = 0; i < rows; i++) {
 				for (int j = 0; j < colums; j++) {
-					tableau[i][j] = new CellJeuVieTorique(enumElems2);
+					tableau[i][j] = new CellJeuVie(enumElems2);
 				}
 			}
 			tableau[2][1].setState(LifeState.ALIVE);			
@@ -158,6 +165,10 @@ public class GridJeuVieTorique implements Grid<State, SquareGridNbh, CellJeuVieT
 		neighborConstructor();
 	}
 	
+	/**
+	 * Build the table of neighbors, lots of verbose
+	 * but it make the creation process way faster
+	 */
 	private void neighborConstructor(){
 		/*Gestion des voisins*/
 
@@ -288,7 +299,13 @@ public class GridJeuVieTorique implements Grid<State, SquareGridNbh, CellJeuVieT
 		}
 	}
 	
-	public CellJeuVieTorique getCell(int row, int colum){
+	/**
+	 * Obtain a cell from the Grid
+	 * @param row : rows number
+	 * @param colum : column number
+	 * @return : the cell at a given position
+	 */
+	public CellJeuVie getCell(int row, int colum){
 		return tableau[row][colum];
 	}
 
@@ -320,10 +337,16 @@ public class GridJeuVieTorique implements Grid<State, SquareGridNbh, CellJeuVieT
 		return stringBuilder.toString();
 	}
 
+	/**
+	 * @return : number of rows in the Grid
+	 */
 	public int getRows(){
 		return this.rows;
 	}
 	
+	/**
+	 * @return : number of colums in the Grid
+	 */
 	public int getColums(){
 		return this.colums;
 	}
