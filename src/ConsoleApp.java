@@ -7,7 +7,7 @@ import java.util.Scanner;
 
 public class ConsoleApp {
 
-	private static String nomJeux1 = "Jeu de la vie";
+	private static String nomJeux1 = "Jeu de la vie - variante Torique sans diagonales -";
 	private static String nomJeux2 = "Jeu de la vie - variante Torique -";
 
 	public static void main(String[] args) throws IOException {
@@ -18,34 +18,64 @@ public class ConsoleApp {
 		String inputGameName;
 
 		do {
-			menuPrinter();
+			System.out
+			.println("Bonjour bienvenue dans l'interface console du DM1 de CPOO5");
+			System.out.println("Veuillez choisir un jeu (saisir lettre) :\n");
+			System.out.println("\ta - \"" + nomJeux1 + "\"");
+			System.out.println("\tb - \"" + nomJeux2 + "\"");
+			System.out.println("Pour quitter - q");
 			inputGameName = br.readLine();
-
+			int gameMode;
+			GridJeuVieSquare plateau;
+			
 			switch (inputGameName) {
 
 			case ("a"):
-				GridJeuVieTorique plateau = gridTypeChoice();
-			int gameMode = jdvHandler();
-			if (gameMode == 0) {
-				String cpc; // CANARD PC \o/
+				plateau = gridTypeChoice(false);
+				gameMode = jdvHandler();
+				if (gameMode == 0) {
+					String cpc; // CANARD PC \o/
 
-				do {
+					do {
+						System.out.println(plateau.stateAsString());
+						plateau.update();
+						System.out.println(plateau.stateAsString());
+						System.out.println("Voulez-vous quitter ? (o)");
+						cpc = br.readLine();
+					} while (!Objects.equals(cpc, "o"));
+				} else if (gameMode > 0) {
 					System.out.println(plateau.stateAsString());
-					plateau.update();
+					for (int multipleruns = 1; multipleruns < gameMode; multipleruns++) {
+						plateau.update();
+					}
 					System.out.println(plateau.stateAsString());
-					System.out.println("Voulez-vous quitter ? (o)");
-					cpc = br.readLine();
-				} while (!Objects.equals(cpc, "o"));
-			} else if (gameMode > 0) {
-				for (int multipleruns = 1; multipleruns < gameMode; multipleruns++) {
-					plateau.update();
 				}
-			}
-			break;
+				break;
+			
+			case ("b"):
+				plateau = gridTypeChoice(true);
+				gameMode = jdvHandler();
+				if (gameMode == 0) {
+					String cpc; // CANARD PC \o/
+
+					do {
+						System.out.println(plateau.stateAsString());
+						plateau.update();
+						System.out.println(plateau.stateAsString());
+						System.out.println("Voulez-vous quitter ? (o)");
+						cpc = br.readLine();
+					} while (!Objects.equals(cpc, "o"));
+				} else if (gameMode > 0) {
+					System.out.println(plateau.stateAsString());
+					for (int multipleruns = 1; multipleruns < gameMode; multipleruns++) {
+						plateau.update();
+					}
+					System.out.println(plateau.stateAsString());
+				}				
+				break;
 
 			default:
 				break;
-
 			}
 
 		} while (!Objects.equals(inputGameName, "q"));
@@ -55,7 +85,7 @@ public class ConsoleApp {
 	 * Offre le choix entre des presets et grid normaux
 	 * @return : un grid généré ou de preset
 	 */
-	private static GridJeuVieTorique gridTypeChoice() {
+	private static GridJeuVieSquare gridTypeChoice(boolean diag) {
 		String gameMode;
 		@SuppressWarnings("resource")
 		Scanner sc = new Scanner(System.in);
@@ -66,15 +96,14 @@ public class ConsoleApp {
 		System.out.println("Pour quitter - q");
 		do {
 			gameMode = sc.nextLine();
-			if (Objects.equals(gameMode, ("a"))
-					|| Objects.equals(gameMode, ("b"))) {
-				return new GridJeuVieTorique(gameMode);
+			if (Objects.equals(gameMode, ("a")) || Objects.equals(gameMode, ("b"))) {
+				return new GridJeuVieSquare(gameMode, diag);
 			} else if (Objects.equals(gameMode, (""))) {
 				System.out.println("Quel nombre de colonnes désirez-vous?");
 				int colums = sizer();
 				System.out.println("Quel nombre de lignes désirez-vous?");
 				int rows = sizer();
-				GridJeuVieTorique gjvt = new GridJeuVieTorique(rows, colums, true);
+				GridJeuVieSquare gjvt = new GridJeuVieSquare(rows, colums, true);
 				// TODO MAKE A CELL RANDOMIZER FOR THE GRID
 				return gjvt;
 			}
@@ -107,18 +136,6 @@ public class ConsoleApp {
 			}
 		} while (!Objects.equals(gameMode, "q"));
 		return -1;
-	}
-
-	/**
-	 * Print the menu to the user
-	 */
-	private static void menuPrinter() {
-		System.out
-		.println("Bonjour bienvenue dans l'interface console du DM1 de CPOO5");
-		System.out.println("Veuillez choisir un jeu (saisir lettre) :\n");
-		System.out.println("\ta - \"" + nomJeux1 + "\"");
-		System.out.println("\tb - \"" + nomJeux2 + "\"");
-		System.out.println("Pour quitter - q");
 	}
 
 	/**

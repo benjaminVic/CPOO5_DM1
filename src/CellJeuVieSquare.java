@@ -1,16 +1,16 @@
 
-public class CellJeuVie implements Cell<State, SquareGridNbh>{
+public class CellJeuVieSquare implements Cell<State, SquareGridNbh>{
 
 	private State cellState;
-	private CellJeuVie[] neighbor;
+	private CellJeuVieSquare[] neighbor;
 	
 	/**
 	 * Cell Constructor
 	 * @param sizeEnum : neighbors table size : 8 if all directions 4 if only cardinals
 	 */
-	public CellJeuVie(int sizeEnum){
+	public CellJeuVieSquare(int sizeEnum){
 		cellState = LifeState.DEAD;
-		neighbor = new CellJeuVie[sizeEnum];
+		neighbor = new CellJeuVieSquare[sizeEnum];
 	}
 
 	/**
@@ -27,14 +27,11 @@ public class CellJeuVie implements Cell<State, SquareGridNbh>{
 		cellState = state;		
 	}
 
-	/**
-	 * Change the state of the cell depending on the neighbors
-	 */
 	@Override
 	public LifeState nextState() {
 		int aliveNeighbor = 0 ;
-		for (CellJeuVie cjvt : neighbor){
-			if(cjvt.getState() == LifeState.ALIVE){
+		for (CellJeuVieSquare cjv : neighbor){
+			if(cjv.getState() == LifeState.ALIVE){
 				aliveNeighbor++;
 			}
 		}
@@ -53,13 +50,11 @@ public class CellJeuVie implements Cell<State, SquareGridNbh>{
 	 * @param direction : direction of the neighbor
 	 * @param c : cell to which the neigbor is pointing
 	 */
-	public void setNeighbors(SquareGridNbh direction, CellJeuVie c){
+	public void setNeighbors(SquareGridNbh direction, CellJeuVieSquare c){
 		neighbor[neighborDirection(direction)] = c;
 	}
-	
-	
-	@Override
-	public CellJeuVie getNeighbor(SquareGridNbh direction) {
+		
+	public CellJeuVieSquare getNeighbor(SquareGridNbh direction) {
 		return neighbor[neighborDirection(direction)];
 		
 	}

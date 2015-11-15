@@ -1,7 +1,7 @@
 
-public class GridJeuVieTorique implements Grid<State, SquareGridNbh, CellJeuVie>{
+public class GridJeuVieSquare implements Grid<State, SquareGridNbh, CellJeuVieSquare>{
 
-	private CellJeuVie[][] tableau;
+	private CellJeuVieSquare[][] tableau;
 	private final boolean handlesDiagonals;
 	private int rows;
 	private int colums;	
@@ -11,7 +11,7 @@ public class GridJeuVieTorique implements Grid<State, SquareGridNbh, CellJeuVie>
 	 * @param rows : number of rows
 	 * @param colums : number of colums
 	 */
-	public GridJeuVieTorique(int rows, int colums, boolean handlesDiagonals){
+	public GridJeuVieSquare(int rows, int colums, boolean handlesDiagonals){
 		int enumElems = 0;
 		this.handlesDiagonals = handlesDiagonals;
 		if (this.handlesDiagonals == true){
@@ -24,10 +24,10 @@ public class GridJeuVieTorique implements Grid<State, SquareGridNbh, CellJeuVie>
 		this.colums = colums;	
 
 		/*Initialisation du tableau*/
-		tableau = new CellJeuVie[rows][colums];
+		tableau = new CellJeuVieSquare[rows][colums];
 		for (int i = 0;i<rows;i++){
 			for (int j = 0; j<colums ; j++){
-				tableau[i][j] = new CellJeuVie(enumElems);
+				tableau[i][j] = new CellJeuVieSquare(enumElems);
 			}
 		}
 		neighborConstructor();
@@ -37,17 +37,23 @@ public class GridJeuVieTorique implements Grid<State, SquareGridNbh, CellJeuVie>
 	 * Constructor of a Grid with preset
 	 * @param preset : code of the chosen preset
 	 */
-	public GridJeuVieTorique(String preset, boolean handlesDiagonals){
+	public GridJeuVieSquare(String preset, boolean handlesDiagonals){
 		this.handlesDiagonals = handlesDiagonals;
 		switch (preset){
 		case ("a") :
 			this.rows = 15;
 			this.colums = 38;
+			int enumElems = 0;
+			if (this.handlesDiagonals == true){
+				enumElems = SquareGridNbh.values().length;
+			} else {
+				enumElems = (SquareGridNbh.values().length/2);	
+			}
 			/*Initialisation du tableau*/
-			tableau = new CellJeuVie[rows][colums];
+			tableau = new CellJeuVieSquare[rows][colums];
 			for (int i = 0;i<rows;i++){
 				for (int j = 0; j<colums ; j++){
-					tableau[i][j] = new CellJeuVie(8);
+					tableau[i][j] = new CellJeuVieSquare(enumElems);
 				}
 			}
 			/*
@@ -107,15 +113,19 @@ public class GridJeuVieTorique implements Grid<State, SquareGridNbh, CellJeuVie>
 		break;
 
 		case ("b") :
-			int enumElems2 = 0;
-			enumElems2 = SquareGridNbh.values().length;
 			this.rows = 9;
 			this.colums = 28;
+			int enumElems2 = 0;
+			if (this.handlesDiagonals == true){
+				enumElems2 = SquareGridNbh.values().length;
+			} else {
+				enumElems2 = (SquareGridNbh.values().length/2);	
+			}
 			/* Initialisation du tableau */
-			tableau = new CellJeuVie[rows][colums];
+			tableau = new CellJeuVieSquare[rows][colums];
 			for (int i = 0; i < rows; i++) {
 				for (int j = 0; j < colums; j++) {
-					tableau[i][j] = new CellJeuVie(enumElems2);
+					tableau[i][j] = new CellJeuVieSquare(enumElems2);
 				}
 			}
 			tableau[2][1].setState(LifeState.ALIVE);			
@@ -330,7 +340,7 @@ public class GridJeuVieTorique implements Grid<State, SquareGridNbh, CellJeuVie>
 	 * @param colum : column number
 	 * @return : the cell at a given position
 	 */
-	public CellJeuVie getCell(int row, int colum){
+	public CellJeuVieSquare getCell(int row, int colum){
 		return tableau[row][colum];
 	}
 

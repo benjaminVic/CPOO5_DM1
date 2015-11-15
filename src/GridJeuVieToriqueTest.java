@@ -10,7 +10,7 @@ public class GridJeuVieToriqueTest {
 		int k = 0;
 		int i = 0;
 		int j = 0;
-		GridJeuVieTorique g = new GridJeuVieTorique("a", true);
+		GridJeuVieSquare g = new GridJeuVieSquare("a", true);
 		int rows = g.getRows();
 		int colums = g.getColums();
 		for (i = 0; i < rows; ++i) {

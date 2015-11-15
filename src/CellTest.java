@@ -7,7 +7,7 @@ public class CellTest {
 
 	@Test
 	public void set_get_Test() {
-		CellJeuVie c = new CellJeuVie(8);
+		CellJeuVieSquare c = new CellJeuVieSquare(8);
 		char c1 = c.getState().toChar();
 		if (c1 != '.')
 			fail("LifeState.DEAD or constructor not working");
