@@ -1,6 +1,7 @@
 package triangle;
 import square.CellJeuVieSquare;
 import square.LifeState;
+import square.SquareGridNbh;
 import appli.Grid;
 import appli.State;
 
@@ -11,6 +12,31 @@ public class GridJeuVieTriangle implements Grid<State, TriangularGridNbh, CellJe
 	private int rows;
 	private int colums;	
 	
+	/**
+	 * Constructor of the TriangularGrid
+	 * @param rows : number of rows
+	 * @param colums : number of colums
+	 */
+	public GridJeuVieTriangle(int rows, int colums) {
+		int enumElems;
+		enumElems = TriangularGridNbh.values().length;
+		this.rows = rows;
+		this.colums = colums;
+		
+		/*Initialisation du tableau*/
+		tableau = new CellJeuVieTriangle[rows][colums];
+		for (int i = 0;i<rows;i++){
+			for (int j = 0; j<colums ; j++){
+				tableau[i][j] = new CellJeuVieTriangle(enumElems);
+			}
+		}
+		neighborConstructor();
+	}
+	
+	/**
+	 * Constructor of prebuilt Grid
+	 * @param preset : choice of the present in text mode
+	 */
 	public GridJeuVieTriangle(String preset){
 		switch (preset){
 		case ("a") :
@@ -147,11 +173,11 @@ public class GridJeuVieTriangle implements Grid<State, TriangularGridNbh, CellJe
 		}
 		neighborConstructor();
 	}
-	
-	public GridJeuVieTriangle(int rows2, int colums2) {
-		// TODO Auto-generated constructor stub
-	}
 
+	/**
+	 * Build the table of neighbors, lots of verbose
+	 * but it makes the creation process way faster
+	 */
 	private void neighborConstructor(){
 		
 		//GENERAL CASE
@@ -300,6 +326,12 @@ public class GridJeuVieTriangle implements Grid<State, TriangularGridNbh, CellJe
 		return stringBuilder.toString();
 	}
 	
+	/**
+	 * Tentative of a cell maker, doesn't display as it should
+	 * @param i : line to be displayed
+	 * @param stringBuilder : to be appended for printing
+	 * @return : argument stringBuilder with the cells underlines
+	 */
 	public StringBuilder appendTriangleLines(int i, StringBuilder stringBuilder){
 		if (i%2 == 1){
 			stringBuilder.append(' ').append('+');

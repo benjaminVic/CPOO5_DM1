@@ -16,7 +16,7 @@ public class GridJeuVieSquare implements Grid<State, SquareGridNbh, CellJeuVieSq
 	 * @param colums : number of colums
 	 */
 	public GridJeuVieSquare(int rows, int colums, boolean handlesDiagonals){
-		int enumElems = 0;
+		int enumElems;
 		this.handlesDiagonals = handlesDiagonals;
 		if (this.handlesDiagonals == true){
 			enumElems = SquareGridNbh.values().length;
@@ -188,7 +188,7 @@ public class GridJeuVieSquare implements Grid<State, SquareGridNbh, CellJeuVieSq
 	
 	/**
 	 * Build the table of neighbors, lots of verbose
-	 * but it make the creation process way faster
+	 * but it makes the creation process way faster
 	 */
 	private void neighborConstructor(){
 		/*Gestion des voisins*/

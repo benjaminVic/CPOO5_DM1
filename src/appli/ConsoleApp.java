@@ -158,8 +158,7 @@ public class ConsoleApp {
 				} while (!Objects.equals(cellRegeneration, "q"));
 				return gjvs;
 			}
-			System.out
-			.println("Vous vous êtes raté !\n");
+			System.out.println("Vous vous êtes raté !\n");
 		} while (!Objects.equals(gameMode, "q"));
 		return null;
 	}
@@ -187,11 +186,28 @@ public class ConsoleApp {
 				System.out.println("Quel nombre de lignes désirez-vous?");
 				int rows = sizer();
 				GridJeuVieTriangle gjvt = new GridJeuVieTriangle(rows, colums);
-				// TODO MAKE A CELL RANDOMIZER FOR THE GRID
+				String cellRegeneration;//Twelve is the best
+				do{
+				// TODO MAKE A CELL CHOOSER FOR THE GRID
+					System.out.println
+					("Veuillez choisir un ligne et une colonne où rendre la cellule vivante");
+					System.out.println("A quelle ligne désirez-vous rendre la cellule vivante?");
+					int firstInt = integerInput(sc);
+					System.out.println("A quelle colonne désirez-vous rendre la cellule vivante?");
+					int secondInt = integerInput(sc);
+					
+					if(firstInt < gjvt.getRows() && secondInt < gjvt.getColums()){
+						gjvt.getCell(firstInt, secondInt).setState(LifeState.ALIVE);
+						System.out.println(gjvt.stateAsString());
+					} else {
+						System.out.println("Vous essayez d'inserer hors du tableau !");
+					}
+					System.out.println("Pour arrêter d'inserer des cellules : q");
+					cellRegeneration = sc.next();
+				} while (!Objects.equals(cellRegeneration, "q"));
 				return gjvt;
 			}
-			System.out
-			.println("Vous vous êtes raté !\n");
+			System.out.println("Vous vous êtes raté !\n");
 		} while (!Objects.equals(gameMode, "q"));
 		return null;
 	}
