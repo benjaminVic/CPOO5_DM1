@@ -1,4 +1,6 @@
 package appli;
+import highLife.GridHighLifeSquare;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -17,6 +19,8 @@ public class ConsoleApp {
 	private static String nomJeux1 = "Jeu de la vie - variante Torique sans diagonales -";
 	private static String nomJeux2 = "Jeu de la vie - variante Torique -";
 	private static String nomJeux3 = "Jeu de la vie - Triangulaire non torique -";
+	private static String nomJeux4 = "HighLife - variante Torique -";
+	private static String nomJeux5 = "HighLife - variante Torique sans diagonales -";
 
 	public static void main(String[] args) throws IOException {
 
@@ -32,6 +36,8 @@ public class ConsoleApp {
 			System.out.println("\ta - \"" + nomJeux1 + "\"");
 			System.out.println("\tb - \"" + nomJeux2 + "\"");
 			System.out.println("\tc - \"" + nomJeux3 + "\"");
+			System.out.println("\td - \"" + nomJeux4 + "\"");
+			System.out.println("\te - \"" + nomJeux5 + "\"");
 			System.out.println("Pour quitter - q");
 			inputGameName = br.readLine();
 			int gameMode;			
@@ -107,6 +113,52 @@ public class ConsoleApp {
 				}				
 				break;
 				
+			case ("d"):
+				GridHighLifeSquare plateauHigh;
+				plateauHigh = gridTypeChoiceHighLife(true);
+				gameMode = jdvHandler();
+				if (gameMode == 0) {
+					String cpc; // CANARD PC \o/
+
+					do {
+						System.out.println(plateauHigh.stateAsString());
+						plateauHigh.update();
+						System.out.println(plateauHigh.stateAsString());
+						System.out.println("Voulez-vous quitter ? (o)");
+						cpc = br.readLine();
+					} while (!Objects.equals(cpc, "o"));
+				} else if (gameMode > 0) {
+					System.out.println(plateauHigh.stateAsString());
+					for (int multipleruns = 1; multipleruns < gameMode; multipleruns++) {
+						plateauHigh.update();
+					}
+					System.out.println(plateauHigh.stateAsString());
+				}				
+				break;
+				
+			case ("e"):
+				GridHighLifeSquare plateauHigh2;
+			plateauHigh2 = gridTypeChoiceHighLife(false);
+				gameMode = jdvHandler();
+				if (gameMode == 0) {
+					String cpc; // CANARD PC \o/
+
+					do {
+						System.out.println(plateauHigh2.stateAsString());
+						plateauHigh2.update();
+						System.out.println(plateauHigh2.stateAsString());
+						System.out.println("Voulez-vous quitter ? (o)");
+						cpc = br.readLine();
+					} while (!Objects.equals(cpc, "o"));
+				} else if (gameMode > 0) {
+					System.out.println(plateauHigh2.stateAsString());
+					for (int multipleruns = 1; multipleruns < gameMode; multipleruns++) {
+						plateauHigh2.update();
+					}
+					System.out.println(plateauHigh2.stateAsString());
+				}				
+				break;
+							
 			default:
 				break;
 			}
@@ -114,13 +166,13 @@ public class ConsoleApp {
 		} while (!Objects.equals(inputGameName, "q"));
 	}
 
-	/**TODO
+	/**
 	 * Offre le choix entre des presets et grid normaux
 	 * @return : un grid généré ou de preset
 	 */
+	@SuppressWarnings("resource")
 	private static GridJeuVieSquare gridTypeChoice(boolean diag) {
 		String gameMode;
-		@SuppressWarnings("resource")
 		Scanner sc = new Scanner(System.in);
 		System.out.println("Veuillez choisir une grille :");
 		System.out.println("\ta - Preset Gosper Gun");
@@ -136,7 +188,7 @@ public class ConsoleApp {
 				int colums = sizer();
 				System.out.println("Quel nombre de lignes désirez-vous?");
 				int rows = sizer();
-				GridJeuVieSquare gjvs = new GridJeuVieSquare(rows, colums, true);
+				GridJeuVieSquare gjvs = new GridJeuVieSquare(rows, colums, diag);
 				String cellRegeneration;//Twelve is the best
 				do{
 				// TODO MAKE A CELL CHOOSER FOR THE GRID
@@ -163,7 +215,56 @@ public class ConsoleApp {
 		return null;
 	}
 	
-	/**TODO
+	/**
+	 * Offre le choix entre des presets et grid normaux
+	 * @return : un grid généré ou de preset
+	 */
+	@SuppressWarnings("resource")
+	private static GridHighLifeSquare gridTypeChoiceHighLife(boolean diag) {
+		String gameMode;
+		Scanner sc = new Scanner(System.in);
+		System.out.println("Veuillez choisir une grille :");
+		System.out.println("\ta - Preset Gosper Gun");
+		System.out.println("\tb - Preset Puffers");
+		System.out.println("\t\"\" - Génération personnalisée");
+		System.out.println("Pour quitter - q");
+		do {
+			gameMode = sc.nextLine();
+			if (Objects.equals(gameMode, ("a")) || Objects.equals(gameMode, ("b"))) {
+				return new GridHighLifeSquare(gameMode, diag);
+			} else if (Objects.equals(gameMode, (""))) {
+				System.out.println("Quel nombre de colonnes désirez-vous?");
+				int colums = sizer();
+				System.out.println("Quel nombre de lignes désirez-vous?");
+				int rows = sizer();
+				GridHighLifeSquare gjvs = new GridHighLifeSquare(rows, colums, diag);
+				String cellRegeneration;//Twelve is the best
+				do{
+				// TODO MAKE A CELL CHOOSER FOR THE GRID
+					System.out.println
+					("Veuillez choisir un ligne et une colonne où rendre la cellule vivante");
+					System.out.println("A quelle ligne désirez-vous rendre la cellule vivante?");
+					int firstInt = integerInput(sc);
+					System.out.println("A quelle colonne désirez-vous rendre la cellule vivante?");
+					int secondInt = integerInput(sc);
+					
+					if(firstInt < gjvs.getRows() && secondInt < gjvs.getColums()){
+						gjvs.getCell(firstInt, secondInt).setState(LifeState.ALIVE);
+						System.out.println(gjvs.stateAsString());
+					} else {
+						System.out.println("Vous essayez d'inserer hors du tableau !");
+					}
+					System.out.println("Pour arrêter d'inserer des cellules : q");
+					cellRegeneration = sc.next();
+				} while (!Objects.equals(cellRegeneration, "q"));
+				return gjvs;
+			}
+			System.out.println("Vous vous êtes raté !\n");
+		} while (!Objects.equals(gameMode, "q"));
+		return null;
+	}
+	
+	/**
 	 * Offre le choix entre des presets et grid normaux
 	 * @return : un grid généré ou de preset
 	 */
@@ -231,7 +332,7 @@ public class ConsoleApp {
 			} else if (Objects.equals(gameMode, "2")) {
 				System.out
 						.println("Veuillez choisir le nombre d'itération souhaité pour le mode continu");
-				return sc.nextInt();
+				return integerInput(sc);
 			}
 		} while (!Objects.equals(gameMode, "q"));
 		return -1;

@@ -1,20 +1,21 @@
-package square;
+package highLife;
+
+import square.LifeState;
+import square.SquareGridNbh;
 import appli.Cell;
 import appli.State;
 
-
-public class CellJeuVieSquare implements Cell<State, SquareGridNbh>{
-
+public class CellHighLifeSquare implements Cell<State, SquareGridNbh>{
 	private State cellState;
-	private Cell[] neighbor;
+	private CellHighLifeSquare[] neighbor;
 	
 	/**
 	 * Cell Constructor
 	 * @param sizeEnum : neighbors table size : 8 if all directions 4 if only cardinals
 	 */
-	public CellJeuVieSquare(int sizeEnum){
+	public CellHighLifeSquare(int sizeEnum){
 		cellState = LifeState.DEAD;
-		neighbor = new CellJeuVieSquare[sizeEnum];
+		neighbor = new CellHighLifeSquare[sizeEnum];
 	}
 
 	/**
@@ -34,7 +35,7 @@ public class CellJeuVieSquare implements Cell<State, SquareGridNbh>{
 	@Override
 	public LifeState nextState() {
 		int aliveNeighbor = 0 ;
-		for (Cell cjv : neighbor){
+		for (CellHighLifeSquare cjv : neighbor){
 			if(cjv.getState() == LifeState.ALIVE){
 				aliveNeighbor++;
 			}
@@ -42,8 +43,8 @@ public class CellJeuVieSquare implements Cell<State, SquareGridNbh>{
 		if (cellState == LifeState.ALIVE && 
 				(aliveNeighbor == 2 || aliveNeighbor == 3)){
 			return LifeState.ALIVE;
-		} else if (cellState == LifeState.DEAD &&
-				aliveNeighbor == 3){
+		} else if ((cellState == LifeState.DEAD && aliveNeighbor == 3)
+				|| (cellState == LifeState.DEAD && aliveNeighbor == 6)){
 			return LifeState.ALIVE;
 		}
 		return LifeState.DEAD;
@@ -54,11 +55,11 @@ public class CellJeuVieSquare implements Cell<State, SquareGridNbh>{
 	 * @param direction : direction of the neighbor
 	 * @param c : cell to which the neigbor is pointing
 	 */
-	public void setNeighbors(SquareGridNbh direction, CellJeuVieSquare c){
+	public void setNeighbors(SquareGridNbh direction, CellHighLifeSquare c){
 		neighbor[neighborDirection(direction)] = c;
 	}
 		
-	public Cell getNeighbor(SquareGridNbh direction) {
+	public CellHighLifeSquare getNeighbor(SquareGridNbh direction) {
 		return neighbor[neighborDirection(direction)];
 		
 	}
@@ -98,5 +99,4 @@ public class CellJeuVieSquare implements Cell<State, SquareGridNbh>{
 		default : return -1;
 		}
 	}
-
 }
