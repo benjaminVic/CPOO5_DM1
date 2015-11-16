@@ -1,8 +1,15 @@
+package square;
 import static org.junit.Assert.*;
+
+import java.util.Objects;
 
 import org.junit.Test;
 
-public class GridJeuVieToriqueTest {
+import triangle.CellJeuVieTriangle;
+import triangle.GridJeuVieTriangle;
+import triangle.TriangularGridNbh;
+
+public class GridJeuVieSquareTest {
 
 	@Test
 	public void testNeighbors() {
@@ -36,5 +43,28 @@ public class GridJeuVieToriqueTest {
 		}
 		g.update();
 	}
+	
+	@Test
+	public void testTriangles() {
+		
+		int k = 0;
+		int i = 0;
+		int j = 0;
+		GridJeuVieTriangle g = new GridJeuVieTriangle("a");
+		int rows = g.getRows();
+		int colums = g.getColums();
+		System.out.println(g.stateAsString());
+		g.update();
+		System.out.println(g.stateAsString());
+	}
 
+	@Test
+	public void testNull() {
+		CellJeuVieSquare c = new CellJeuVieSquare(2);
+		c.setNeighbors(SquareGridNbh.NORTH, c);
+		if (!Objects.isNull(c.getNeighbor(SquareGridNbh.EAST))){
+			fail("SHOULD BE NULL");
+		}
+		
+	}
 }

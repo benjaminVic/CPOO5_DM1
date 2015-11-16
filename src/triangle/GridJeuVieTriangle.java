@@ -1,23 +1,23 @@
+package triangle;
+import square.CellJeuVieSquare;
+import square.LifeState;
+import appli.Grid;
+import appli.State;
+
 
 public class GridJeuVieTriangle implements Grid<State, TriangularGridNbh, CellJeuVieTriangle>{
 
 	private CellJeuVieTriangle[][] tableau;
-	private final boolean handlesDiagonals;
 	private int rows;
 	private int colums;	
 	
-	public GridJeuVieTriangle(String preset, boolean handlesDiagonals){
-		this.handlesDiagonals = handlesDiagonals;
+	public GridJeuVieTriangle(String preset){
 		switch (preset){
 		case ("a") :
 			this.rows = 15;
 			this.colums = 38;
 			int enumElems = 0;
-			if (this.handlesDiagonals == true){
 				enumElems = TriangularGridNbh.values().length;
-			} else {
-				enumElems = (TriangularGridNbh.values().length/2);	
-			}
 			/*Initialisation du tableau*/
 			tableau = new CellJeuVieTriangle[rows][colums];
 			for (int i = 0;i<rows;i++){
@@ -25,7 +25,6 @@ public class GridJeuVieTriangle implements Grid<State, TriangularGridNbh, CellJe
 					tableau[i][j] = new CellJeuVieTriangle(enumElems);
 				}
 			}
-			neighborConstructor();
 			
 			/*
 			 * Setting the preset on living cells
@@ -87,11 +86,7 @@ public class GridJeuVieTriangle implements Grid<State, TriangularGridNbh, CellJe
 			this.rows = 9;
 			this.colums = 28;
 			int enumElems2 = 0;
-			if (this.handlesDiagonals == true){
 				enumElems2 = TriangularGridNbh.values().length;
-			} else {
-				enumElems2 = (TriangularGridNbh.values().length/2);	
-			}
 			/* Initialisation du tableau */
 			tableau = new CellJeuVieTriangle[rows][colums];
 			for (int i = 0; i < rows; i++) {
@@ -99,7 +94,6 @@ public class GridJeuVieTriangle implements Grid<State, TriangularGridNbh, CellJe
 					tableau[i][j] = new CellJeuVieTriangle(enumElems2);
 				}
 			}
-			neighborConstructor();
 			tableau[2][1].setState(LifeState.ALIVE);			
 			tableau[1][2].setState(LifeState.ALIVE);
 			tableau[1][3].setState(LifeState.ALIVE);
@@ -151,6 +145,7 @@ public class GridJeuVieTriangle implements Grid<State, TriangularGridNbh, CellJe
 			tableau[2][27].setState(LifeState.ALIVE);
 			break;
 		}
+		neighborConstructor();
 	}
 	
 	private void neighborConstructor(){
@@ -171,79 +166,86 @@ public class GridJeuVieTriangle implements Grid<State, TriangularGridNbh, CellJe
 		}	
 		
 		//TOP LEFT CORNER
-		tableau[0][0] = new CellJeuVieTriangle(1);
 		tableau[0][0].setNeighbors(TriangularGridNbh.RIGHT, tableau[0][1]);
 		
-		//TODO TOP RIGHT CORNER
-		
-		//TODO BOTTOM LEFT CORNER
-		
-		//TODO BOTTOM RIGHT CORNER
-		
-		//LEFT COLUMN
-		for (int i = 1 ; i< rows-1 ; ++i){
-			tableau[i][0] = new CellJeuVieTriangle(2);
-			if(i%2 == 1){
-				tableau[i][0].setNeighbors(TriangularGridNbh.RIGHT, tableau[i][1]);
-				tableau[i][0].setNeighbors(TriangularGridNbh.VERTICALITY, tableau[i+1][0]);
-			} else {
-				tableau[i][0].setNeighbors(TriangularGridNbh.RIGHT, tableau[i][1]);
-				tableau[i][0].setNeighbors(TriangularGridNbh.VERTICALITY, tableau[i-1][0]);
-			}
+		// TOP RIGHT CORNER
+		tableau[0][colums-1].setNeighbors(TriangularGridNbh.LEFT, tableau[0][colums-2]);
+		if ((colums-1)%2 == 1){
+			tableau[0][colums-1].setNeighbors(TriangularGridNbh.VERTICALITY, tableau[1][colums-1]);
 		}
 		
-		//RIGHT COLUMN
-		for (int i = 1 ; i < rows-1 ; ++i){
-			if (i%2 == 1){
-				
+		// BOTTOM LEFT CORNER
+		tableau[rows-1][0].setNeighbors(TriangularGridNbh.VERTICALITY, tableau[rows-1][1]);
+		if((rows-1)%2 == 0){
+			tableau[rows-1][0].setNeighbors(TriangularGridNbh.VERTICALITY, tableau[rows-2][0]);
+		}
+		
+		// BOTTOM RIGHT CORNER
+		tableau[rows-1][colums-1].setNeighbors(TriangularGridNbh.LEFT, tableau[rows-1][colums-2]);
+		if (((rows-1)%2 == 1 && ((colums-1)%2 == 1)) || ((rows-1)%2 == 0 && ((colums-1)%2 == 0))){
+			tableau[rows-1][colums-1].setNeighbors(TriangularGridNbh.VERTICALITY, tableau[rows-2][colums-1]);
+		}
+		
+		//LEFT COLUMN AND RIGHT COLUMN
+		for (int i = 1 ; i< rows-1 ; ++i){
+			//LEFT
+			tableau[i][0].setNeighbors(TriangularGridNbh.RIGHT, tableau[i][1]);
+			//RIGHT
+			tableau[i][colums-1].setNeighbors(TriangularGridNbh.LEFT, tableau[i][colums-2]);
+			if(i%2 == 1){
+				//LEFT
+				tableau[i][0].setNeighbors(TriangularGridNbh.VERTICALITY, tableau[i+1][0]);
+				//RIGHT
+				if((colums-1)%2 == 1 ){
+					tableau[i][colums-1].setNeighbors(TriangularGridNbh.VERTICALITY, tableau[i-1][colums-1]);
+				}
+			} else {
+				//LEFT
+				tableau[i][0].setNeighbors(TriangularGridNbh.VERTICALITY, tableau[i-1][0]);
+				//RIGHT
+				if((colums-1)%2 == 0 ){
+					tableau[i][colums-1].setNeighbors(TriangularGridNbh.VERTICALITY, tableau[i-1][colums-1]);
+				}
 			}
 		}
 		
 		//TOP AND BOTTOM LINE
 			for (int j = 1 ; j < colums-1 ; ++j){
-
+				//TOP
+				tableau[0][j].setNeighbors(TriangularGridNbh.LEFT, tableau[0][j-1]);
+				tableau[0][j].setNeighbors(TriangularGridNbh.RIGHT, tableau[0][j+1]);
+				//BOTTOM
+				tableau[rows-1][j].setNeighbors(TriangularGridNbh.LEFT, tableau[rows-1][j-1]);
+				tableau[rows-1][j].setNeighbors(TriangularGridNbh.RIGHT, tableau[rows-1][j+1]);
 				//if the column is NOT EVEN
 				if(j%2 == 1){
 					//TOP
 					tableau[0][j].setNeighbors(TriangularGridNbh.VERTICALITY, tableau[1][j]);
-					tableau[0][j].setNeighbors(TriangularGridNbh.LEFT, tableau[0][j-1]);
-					tableau[0][j].setNeighbors(TriangularGridNbh.RIGHT, tableau[0][j+1]);				
-
 					//if the last line is NOT EVEN
 					if ((rows-1)%2 == 1){
 						//BOTTOM
-						tableau[rows-1][j].setNeighbors(TriangularGridNbh.LEFT, tableau[rows-1][j-1]);
-						tableau[rows-1][j].setNeighbors(TriangularGridNbh.RIGHT, tableau[rows-1][j+1]);
 						tableau[rows-1][j].setNeighbors(TriangularGridNbh.VERTICALITY, tableau[rows-1][j]);
 					//if the last line is EVEN
-					} else {
-						tableau[rows-1][j] = new CellJeuVieTriangle(2);
-						//BOTTOM
-						tableau[rows-1][j].setNeighbors(TriangularGridNbh.LEFT, tableau[rows-1][j-1]);
-						tableau[rows-1][j].setNeighbors(TriangularGridNbh.RIGHT, tableau[rows-1][j+1]);
 					}
 					//if the column is EVEN
 				} else /*(j%2 == 0)*/{
-					//TOP
-					tableau[0][j] = new CellJeuVieTriangle(2);
-					tableau[0][j].setNeighbors(TriangularGridNbh.LEFT, tableau[0][j-1]);
-					tableau[0][j].setNeighbors(TriangularGridNbh.RIGHT, tableau[0][j+1]);
 					//if the last line is NOT EVEN
-					 if ((rows-1)%2 == 1) {
-						 //BOTTOM
-						tableau[rows-1][j] = new CellJeuVieTriangle(2);
-						tableau[rows-1][j].setNeighbors(TriangularGridNbh.LEFT, tableau[rows-1][j-1]);
-						tableau[rows-1][j].setNeighbors(TriangularGridNbh.RIGHT, tableau[rows-1][j+1]);
-					//if the last line is EVEN
-					 } else {
-						//BOTTOM
-						tableau[rows-1][j].setNeighbors(TriangularGridNbh.LEFT, tableau[rows-1][j-1]);
-						tableau[rows-1][j].setNeighbors(TriangularGridNbh.RIGHT, tableau[rows-1][j+1]);
+					 if (!((rows-1)%2 == 1)) {
 						tableau[rows-1][j].setNeighbors(TriangularGridNbh.VERTICALITY, tableau[rows-1][j]);
 					 }
 				}
 			}
 				
+	}
+	
+	/**
+	 * Obtain a cell from the Grid
+	 * @param row : rows number
+	 * @param colum : column number
+	 * @return : the cell at a given position
+	 */
+	public CellJeuVieTriangle getCell(int row, int colum){
+		return tableau[row][colum];
 	}
 	
 	@Override
@@ -264,8 +266,29 @@ public class GridJeuVieTriangle implements Grid<State, TriangularGridNbh, CellJe
 
 	@Override
 	public String stateAsString() {
-		// TODO Auto-generated method stub
-		return null;
+		final StringBuilder stringBuilder = new StringBuilder();
+		for (int i = 0 ; i<rows ; i++){
+			stringBuilder .append('\n');
+			
+			for (int j = 0 ; j < colums ; j++){
+				stringBuilder.append(' ').append(tableau[i][j].getState().toChar());
+			}
+		}
+		return stringBuilder.toString();
+	}
+	
+	/**
+	 * @return : number of rows in the Grid
+	 */
+	public int getRows(){
+		return this.rows;
+	}
+	
+	/**
+	 * @return : number of colums in the Grid
+	 */
+	public int getColums(){
+		return this.colums;
 	}
 
 }

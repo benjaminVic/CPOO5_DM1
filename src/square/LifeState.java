@@ -1,3 +1,7 @@
+package square;
+
+import appli.State;
+
 public enum LifeState implements State {
 	DEAD {
 		public char toChar() {

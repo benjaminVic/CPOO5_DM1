@@ -1,3 +1,4 @@
+package appli;
 public interface Grid<S extends State, N extends Enum<N>, C extends Cell<?, N>> {
 	/**
 	 * Exécuter une transition de l'automate cellulaire.

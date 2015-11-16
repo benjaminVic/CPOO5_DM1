@@ -1,3 +1,4 @@
+package appli;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 

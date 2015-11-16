@@ -1,3 +1,4 @@
+package square;
 
 public enum SquareGridNbh {
 	NORTH,

@@ -1,3 +1,7 @@
+package square;
+import appli.Cell;
+import appli.State;
+
 
 public class CellJeuVieSquare implements Cell<State, SquareGridNbh>{
 

@@ -1,3 +1,10 @@
+package triangle;
+import java.util.Objects;
+
+import square.LifeState;
+import appli.Cell;
+import appli.State;
+
 
 public class CellJeuVieTriangle implements Cell<State, TriangularGridNbh>{
 
@@ -37,7 +44,7 @@ public class CellJeuVieTriangle implements Cell<State, TriangularGridNbh>{
 	}
 
 	public CellJeuVieTriangle getNeighbor(TriangularGridNbh direction) {
-		return neighbor[neighborDirection(direction)];
+			return neighbor[neighborDirection(direction)];
 	}
 
 	@Override
@@ -46,8 +53,10 @@ public class CellJeuVieTriangle implements Cell<State, TriangularGridNbh>{
 	public LifeState nextState() {
 		int aliveNeighbor = 0 ;
 		for (CellJeuVieTriangle cjv : neighbor){
-			if(cjv.getState() == LifeState.ALIVE){
-				aliveNeighbor++;
+			if (Objects.nonNull(cjv)){
+				if(cjv.getState() == LifeState.ALIVE){
+					aliveNeighbor++;
+				}
 			}
 		}
 		if (cellState == LifeState.ALIVE && 

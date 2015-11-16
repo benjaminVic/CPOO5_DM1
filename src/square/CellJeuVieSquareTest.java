@@ -1,9 +1,10 @@
+package square;
 import static org.junit.Assert.*;
 
 import org.junit.Test;
 
 
-public class CellTest {
+public class CellJeuVieSquareTest {
 
 	@Test
 	public void set_get_Test() {

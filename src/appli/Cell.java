@@ -1,3 +1,4 @@
+package appli;
 public interface Cell<S extends State, N extends Enum<N>> {
 	/**
 	 * @return état courant de la cellule
