@@ -148,6 +148,10 @@ public class GridJeuVieTriangle implements Grid<State, TriangularGridNbh, CellJe
 		neighborConstructor();
 	}
 	
+	public GridJeuVieTriangle(int rows2, int colums2) {
+		// TODO Auto-generated constructor stub
+	}
+
 	private void neighborConstructor(){
 		
 		//GENERAL CASE
@@ -267,14 +271,57 @@ public class GridJeuVieTriangle implements Grid<State, TriangularGridNbh, CellJe
 	@Override
 	public String stateAsString() {
 		final StringBuilder stringBuilder = new StringBuilder();
+		
 		for (int i = 0 ; i<rows ; i++){
 			stringBuilder .append('\n');
-			
+			//appendTriangleLines(i,stringBuilder);
+			stringBuilder .append('\n');
+			if (i%2==1){
+				stringBuilder.append('/');
+			} else {
+				stringBuilder.append('\\');
+			}
 			for (int j = 0 ; j < colums ; j++){
-				stringBuilder.append(' ').append(tableau[i][j].getState().toChar());
+				if (i%2 == 1){
+					if (j%2==1){
+						stringBuilder.append(tableau[i][j].getState().toChar()).append('/');
+					} else {
+						stringBuilder.append(tableau[i][j].getState().toChar()).append('\\');
+					}
+				} else {
+					if (j%2==1){
+						stringBuilder.append(tableau[i][j].getState().toChar()).append('\\');
+					} else {
+						stringBuilder.append(tableau[i][j].getState().toChar()).append('/');
+					}
+				}
 			}
 		}
 		return stringBuilder.toString();
+	}
+	
+	public StringBuilder appendTriangleLines(int i, StringBuilder stringBuilder){
+		if (i%2 == 1){
+			stringBuilder.append(' ').append('+');
+			for (int j = 0 ; j<colums ; ++j){
+				if (j%2 == 1){
+					stringBuilder.append('-').append('-').append('-');
+				} else {
+					stringBuilder.append('+');
+				}
+			}
+		} else {
+			stringBuilder.append('+');
+			for (int j = 0 ; j<colums ; ++j){
+				if (j%2 == 1){
+					stringBuilder.append('+');
+				} else {
+					stringBuilder.append('-').append('-').append('-');
+				}
+			}
+		}
+		
+		return stringBuilder;
 	}
 	
 	/**
